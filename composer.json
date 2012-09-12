@@ -12,7 +12,8 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "kriswallsmith/buzz": "v0.6"
+        "symfony/event-dispatcher": "2.1.*",
+        "kriswallsmith/buzz": "v0.7"
     },
     "require-dev": {},
     "suggest": {},

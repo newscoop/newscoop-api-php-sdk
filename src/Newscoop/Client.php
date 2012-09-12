@@ -35,7 +35,7 @@ class Client {
      * apiEndpoint used in request
      * @var string
      */
-    private $apiEndpoint = 'http://newscoop.dev/api';
+    private $apiEndpoint;
 
     /**
      * Browser for making API requests
@@ -64,8 +64,9 @@ class Client {
    /**
     * Initialize a Newscoop PHP-SDK.
     */
-    public function __construct()
+    public function __construct($apiEndpoint = 'http://newscoop.dev/api')
     {
+        $this->setApiEndpoint($apiEndpoint);
         $this->browser = new Buzz\Browser(new Buzz\Client\Curl());
         $this->dispatcher = new EventDispatcher();
         
