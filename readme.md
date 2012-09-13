@@ -9,7 +9,7 @@ management. The enterprise-standard journalist’s dashboard and a templating
 engine supporting anything from HTML5 to mobile complete this fast 
 production and publishing system.
 
-This library allows for access to Newscoop REST API (codename gimme).
+This library allows for access to [Newscoop REST API][2] (codename gimme).
 
 Newscoop PHP-SDK works with PHP 5.3.3 or later.
 
@@ -27,7 +27,7 @@ run the `php composer.phar install` command to install it:
 
 ## More Information
 
-Read the [documentation][2] for more information.
+Read the Newscoop REST API [documentation][2] for more information.
 
 ## License
 

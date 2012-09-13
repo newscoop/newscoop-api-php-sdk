@@ -6,13 +6,13 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-namespace Newscoop/Exception;
+namespace Newscoop\API\Exception;
 
 /**
  * Thrown when an API call returns an exception.
  *
  */
-class NewscoopApiException extends Exception
+class NewscoopApiException extends \Exception
 {
   /**
    * The result from the API server that represents the exception information.
@@ -25,14 +25,15 @@ class NewscoopApiException extends Exception
    * @param array $result The result from the API server
    */
   public function __construct($result) {
-    $this->result = $result;
+    $this->result = $result = $result['errors'];
 
-    $code = isset($result['error_code']) ? $result['error_code'] : 0;
 
-    if (isset($result['error_description'])) {
-      $msg = $result['error_description'];
+    $code = isset($result[0]['code']) ? $result[0]['code'] : 0;
+
+    if (isset($result[0]['message'])) {
+        $msg = $result[0]['message'];
     } else {
-      $msg = 'Unknown Error. Check getResult()';
+        $msg = 'Unknown Error. Check getResult()';
     }
 
     parent::__construct($msg, $code);
@@ -44,7 +45,7 @@ class NewscoopApiException extends Exception
    * @return array The result from the API server
    */
   public function getResult() {
-    return $this->result;
+      return $this->result;
   }
 
   /**
@@ -54,26 +55,13 @@ class NewscoopApiException extends Exception
    * @return string
    */
   public function getType() {
-    if (isset($this->result['error'])) {
-      $error = $this->result['error'];
-      if (is_string($error)) {
-        return $error;
-      }
+    if (isset($this->result[0]['type'])) {
+        $error = $this->result[0]['type'];
+        if (is_string($error)) {
+            return $error;
+        }
     }
 
-    return 'Exception';
-  }
-
-  /**
-   * To make debugging easier.
-   *
-   * @return string The string representation of the error
-   */
-  public function __toString() {
-    $str = $this->getType() . ': ';
-    if ($this->code != 0) {
-      $str .= $this->code . ': ';
-    }
-    return $str . $this->message;
+    return 'NewscoopApiException';
   }
 }
