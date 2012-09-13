@@ -61,18 +61,26 @@ class Client {
      * @var string
      */
     private $uri;
+    /**
+     * Set uri
+     * @param string $uri resource uri
+     */
+    public function setUri($uri)
+    {
+        $this->uri = $uri;
+
+        return $this;
+    }
 
     /**
-     * Resource path
-     * @var string
+     * Get uri
+     * 
+     * @return string resource uri
      */
-    private $path;
-
-    /**
-     * Resource optional params
-     * @var array
-     */
-    private $params;
+    public function getUri()
+    {
+        return $this->uri;
+    }
 
    /**
     * Initialize a Newscoop PHP-SDK.
@@ -112,55 +120,14 @@ class Client {
     }
 
     /**
-     * Set uri
-     * @param string $uri resource uri
+     * Get ApiCallBuilder for resource
+     * @param string $path resource path
+     * @param array $params resource params
+     * @return ApiCallBuilder ApiCallBuilder object
      */
-    public function setUri($uri)
-    {
-        $this->uri = $uri;
-
-        return $this;
-    }
-
-    /**
-     * Get uri
-     * 
-     * @return string resource uri
-     */
-    public function getUri()
-    {
-        return $this->uri;
-    }
-
-    /**
-     * Set params
-     * @param string $params resource uri
-     */
-    public function setParams($params)
-    {
-        $this->params = $params;
-
-        return $this;
-    }
-
-    /**
-     * Add param
-     * @param string $key param key
-     * @param mixed $value param value
-     */
-    public function addParam($key, $value)
-    {
-        $this->params[$key] = $value;
-
-        return $this;
-    }
-
     public function getResource($path, $params = array())
     {   
-        $this->path = $path;
-        $this->params = $params;
-
-        return new ApiCallBuilder($this);
+        return new ApiCallBuilder($this, $path, $params);
     }
 
     /**
@@ -168,11 +135,11 @@ class Client {
      * 
      * @return object Client
      */
-    public function makeRequest()
+    public function makeRequest($path, $params)
     {
         $this->dispatcher->dispatch('api.createUri', new GenericEvent($this, array(
-            'path' => $this->path,
-            'params' => $this->params
+            'path' => $path,
+            'params' => $params
         )));
 
         $this->response = $this->browser->get($this->getUri());       

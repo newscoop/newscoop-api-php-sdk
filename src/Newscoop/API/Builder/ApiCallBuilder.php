@@ -23,12 +23,51 @@ class ApiCallBuilder {
     private $client;
 
     /**
+     * Resource path
+     * @var string
+     */
+    private $path;
+
+    /**
+     * Resource optional params
+     * @var array
+     */
+    private $params;
+
+    /**
      * Contruct ApiCallBuilder object
      * @param Client $client Client instance
+     * @param string $path resource path
+     * @param array $params resource params
      */
-    public function __construct(Client $client)
+    public function __construct(Client $client, $path, $params)
     {
         $this->client = $client;
+        $this->path = $path;
+        $this->params = $params;
+
+        return $this;
+    }
+
+    /**
+     * Set params
+     * @param string $params resource uri
+     */
+    public function setParams($params)
+    {
+        $this->params = $params;
+
+        return $this;
+    }
+
+    /**
+     * Add param
+     * @param string $key param key
+     * @param mixed $value param value
+     */
+    public function addParam($key, $value)
+    {
+        $this->params[$key] = $value;
 
         return $this;
     }
@@ -39,7 +78,7 @@ class ApiCallBuilder {
      */
     public function setItemsPerPage($number)
     {
-        $this->client->addParam('items_per_page', $number);
+        $this->addParam('items_per_page', $number);
 
         return $this;
     }
@@ -50,7 +89,7 @@ class ApiCallBuilder {
      */
     public function setPage($number)
     {
-        $this->client->addParam('page', $number);
+        $this->addParam('page', $number);
 
         return $this;
     }
@@ -61,7 +100,7 @@ class ApiCallBuilder {
      */
     public function setOrder($order = array())
     {
-        $this->client->addParam('order', $order);
+        $this->addParam('order', $order);
 
         return $this;
     }
@@ -72,7 +111,7 @@ class ApiCallBuilder {
      */
     public function setFields($fields = array())
     {
-        $this->client->addParam('fields', implode(',', $fields));
+        $this->addParam('fields', implode(',', $fields));
 
         return $this;
     }
@@ -84,6 +123,6 @@ class ApiCallBuilder {
      */
     public function makeRequest()
     {
-        return $this->client->makeRequest();
+        return $this->client->makeRequest($this->path, $this->params);
     }
 }
