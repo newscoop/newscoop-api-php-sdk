@@ -15,19 +15,20 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 if (!function_exists('curl_init')) {
-  throw new Exception('Newscoop PHP-SDK needs the CURL PHP extension.');
+    throw new Exception('Newscoop PHP-SDK needs the CURL PHP extension.');
 }
 if (!function_exists('json_decode')) {
-  throw new Exception('Newscoop PHP-SDK needs the JSON PHP extension.');
+    throw new Exception('Newscoop PHP-SDK needs the JSON PHP extension.');
 }
 
 /**
  * Provides access to the Newscoop REST API. This class provides
  * a majority of the functionality needed.
  */
-class Client {
+class Client 
+{
 
-   /**
+    /**
     * Version.
     */
     const VERSION = '1.0.0';
@@ -61,6 +62,7 @@ class Client {
      * @var string
      */
     private $uri;
+    
     /**
      * Set uri
      * @param string $uri resource uri
@@ -82,7 +84,7 @@ class Client {
         return $this->uri;
     }
 
-   /**
+    /**
     * Initialize a Newscoop PHP-SDK.
     */
     public function __construct($apiEndpoint = 'http://newscoop.dev/api')
@@ -92,12 +94,14 @@ class Client {
         $this->dispatcher = new EventDispatcher();
         
         // Create final uri called by Buzz\Browser
-        $this->dispatcher->addListener('api.createUri', function (GenericEvent $event) {
-            $uri = $this->getApiEndpoint() . $event->getArgument('path');
-            $uri = $uri . '?' . http_build_query($event->getArgument('params'));
+        $this->dispatcher->addListener('api.createUri', 
+            function (GenericEvent $event) {
+                $uri = $this->getApiEndpoint().$event->getArgument('path');
+                $uri = $uri.'?'.http_build_query($event->getArgument('params'));
 
-            $this->setUri($uri);
-        });
+                $this->setUri($uri);
+            }
+        );
     }
 
     /**
@@ -137,10 +141,12 @@ class Client {
      */
     public function makeRequest($path, $params)
     {
-        $this->dispatcher->dispatch('api.createUri', new GenericEvent($this, array(
-            'path' => $path,
-            'params' => $params
-        )));
+        $this->dispatcher->dispatch('api.createUri', 
+            new GenericEvent($this, array(
+                'path' => $path,
+                'params' => $params
+            ))
+        );
 
         $this->response = $this->browser->get($this->getUri());       
 

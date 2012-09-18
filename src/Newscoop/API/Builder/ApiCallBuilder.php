@@ -14,7 +14,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * Provide helper methods for request
  */
-class ApiCallBuilder {
+class ApiCallBuilder
+{
 
     /**
      * Client instance
