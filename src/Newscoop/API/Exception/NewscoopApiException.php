@@ -20,10 +20,10 @@ class NewscoopApiException extends \Exception
     protected $result;
 
     /**
-    * Make a new API Exception with the given result.
-    *
-    * @param array $result The result from the API server
-    */
+     * Make a new API Exception with the given result.
+     *
+     * @param array $result The result from the API server
+     */
     public function __construct($result)
     {
         $this->result = $result = $result['errors'];
@@ -41,21 +41,21 @@ class NewscoopApiException extends \Exception
     }
 
     /**
-    * Return the associated result object returned by the API server.
-    *
-    * @return array The result from the API server
-    */
+     * Return the associated result object returned by the API server.
+     *
+     * @return array The result from the API server
+     */
     public function getResult()
     {
         return $this->result;
     }
 
     /**
-    * Returns the associated type for the error. This will default to
-    * 'Exception' when a type is not available.
-    *
-    * @return string
-    */
+     * Returns the associated type for the error. This will default to
+     * 'Exception' when a type is not available.
+     *
+     * @return string
+     */
     public function getType()
     {
         if (isset($this->result[0]['type'])) {
