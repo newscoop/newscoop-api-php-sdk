@@ -93,13 +93,14 @@ class Client
         $this->browser = new Buzz\Browser(new Buzz\Client\Curl());
         $this->dispatcher = new EventDispatcher();
         
+        $obj = $this;
         // Create final uri called by Buzz\Browser
         $this->dispatcher->addListener('api.createUri', 
-            function (GenericEvent $event) {
-                $uri = $this->getApiEndpoint().$event->getArgument('path');
+            function (GenericEvent $event) use ($obj) {
+                $uri = $obj->getApiEndpoint().$event->getArgument('path');
                 $uri = $uri.'?'.http_build_query($event->getArgument('params'));
 
-                $this->setUri($uri);
+                $obj->setUri($uri);
             }
         );
     }
